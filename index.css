@@ -1,3 +1,26 @@
+:root{
+    --background: #0B0C1E;
+    --container-color: #FFFEFF;
+    --grey-container: #D7D5D5;
+    --text-color: #0B0C1E;
+
+    transition: background-color 0.4s ease-in-out, 
+                color 0.4s ease-in-out;
+}
+
+.darkmode{
+    --background: #7D80F9;
+    --container-color: #0B0C1E;
+    --grey-container: #222433;
+    --text-color: #FFFEFF;
+}
+
+body, .app-container, .dropdown, .label, .ball {
+    transition: background-color 0.4s ease-in-out, 
+                color 0.4s ease-in-out, 
+                border-color 0.4s ease-in-out;
+}
+
 *{
     box-sizing: border-box;
     margin: 0px;
@@ -9,7 +32,7 @@ body{
     padding: 0;
     font-family: "Inter", sans-serif;
     box-sizing: border-box;
-    background-color: #7D80F9;
+    background-color: var(--background);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,11 +40,11 @@ body{
 }
 
 .app-container{
-    background-color: #0B0C1E;
+    background-color: var(--container-color);
     width: 100%;
     height: 100vh;
     padding: 34px;
-    color: white;
+    color: var(--text-color);
 }
 
 /* Top section */
@@ -40,8 +63,8 @@ body{
     border-radius: 10px;
     padding: 10px; 
     font-size: 16px;
-    background-color: #222433;
-    color: white;
+    background-color: var(--grey-container);
+    color: var(--text-color);
     border: none;
     appearance: none;
     width: 130px;
@@ -52,7 +75,7 @@ body{
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
-    color: white;
+    color: var(--text-color);
     font-size: 12px;
     pointer-events: none;
 }
@@ -61,7 +84,7 @@ body{
 .label{
     width: 72px;
     height: 38px;
-    background-color: #D7D5D5;
+    background-color: var(--grey-container);
     border-radius: 50px;
     padding: 5px;
     position: relative;
@@ -71,7 +94,7 @@ body{
 }
 
 :has(.checkbox:checked) label {
-    background-color: #222433;
+    background-color: var(--grey-container);
 }
 
 :has(.checkbox:checked) .ball .sun-icon{
@@ -183,7 +206,7 @@ body{
 }
 
 .divider-line{
-    border-left: 1px solid white;
+    border-left: 1px solid var(--text-color);
     height: 50px;
 
 }
