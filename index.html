@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <script defer src="./script.js"></script>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+</head>
+
+<body>
+    <section class="app-container">
+        <section class="header">
+            <div class="dropdown-container">
+                <select class="dropdown">
+                    <option value="celsius">Celsius</option>
+                    <option value="farenheight">Farenheight</option>
+                </select>
+                <span class="material-icons dropdown-icon">keyboard_arrow_down</span>
+            </div>
+            <!-- Light and dark model toggle -->
+            <div class="toggle-container">
+                <input type="checkbox" id="checkbox" class="checkbox" checked>
+                <label for="checkbox" class="label">
+                    <span class="ball">
+                        <img src="/assets/blue-moon.svg" alt="light-icon" class="moon-icon">
+                        <img src="/assets/solar_sun-bold.svg" alt="dark-icon" class="sun-icon">
+                    </span>
+                </label>
+            </div>
+        </section>
+
+        <section class="search-area">
+            <div>
+                <input type="text" placeholder="Enter a city">
+                <button>
+                    <img src="./assets/search-icon.svg" alt="search-icon">
+
+                </button>
+            </div>
+        </section>
+
+        <section class="content-area">
+            <div class="result-display">
+                <img src="./assets/Partly Cloudy.svg" alt="A cloud image">
+                <p class="temp-value">24°C</p>
+                <p class="city-name">London</p>
+            </div>
+            
+            <div class="extra-info">
+                <div>
+                    <span class="material-symbols-outlined"> humidity_percentage</span>
+                </div>
+                <div class="info-detail info-detail-one">
+                    <p>64%</p>
+                    <p>Humility</p>
+                </div>
+                <div class="divider-line"></div>
+                <div class="info-detail">
+                    <p>1016hPa</p>
+                    <p>Pressure</p>
+                </div>
+                <div>
+                    <span class="material-symbols-outlined">speed</span>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+</html>
