@@ -17,6 +17,20 @@ darkModeToggle.addEventListener("change", (event)=>{
 }
 )
 
+// Show loader function
+const showLoader = () => {
+    loader.style.display = "block";
+    document.querySelector(".result-display").style.display = "none";
+    document.querySelector(".extra-info").style.display = "none";
+};
+
+// Hide loader function
+const hideLoader = () => {
+    loader.style.display = "none";
+    document.querySelector(".result-display").style.display = "flex";
+    document.querySelector(".extra-info").style.display = "flex";
+};
+
 //TO D0 :
 // Add error if empty search box is submitted
 //Add loading state when data is fetched
@@ -27,7 +41,9 @@ darkModeToggle.addEventListener("change", (event)=>{
 
 const inputElement = document.querySelector('.city-input-box')
 const searchButton = document.querySelector('.search-button');
-const dropdownElement = document.querySelector('.dropdown')
+const dropdownElement = document.querySelector('.dropdown');
+const loader = document.querySelector(".loader");
+
 
 function showToast(message, type) {
     const toastBox = document.querySelector(".toastBox");
@@ -136,6 +152,7 @@ const getWeatherData = async (cityName) => {
         showToast("Please enter a city name", "error");
         return;
     }
+    showLoader();
     
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
 
@@ -155,12 +172,16 @@ const getWeatherData = async (cityName) => {
         } else {
             showToast("Unexpected error occurred. Please try again later.", "error");
         }
+    } finally {
+        hideLoader();
     }
 };
 
 
 // Function to fetch weather data by user's location
 const getWeatherByLocation = async (latitude, longitude) => {
+    showLoader();
+
     try {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
         const response = await fetch(url);
@@ -169,6 +190,8 @@ const getWeatherByLocation = async (latitude, longitude) => {
         displayData(data);
     } catch (error) {
         console.error("Error fetching location weather data:", error);
+    } finally {
+        hideLoader();
     }
 };
 
