@@ -2,7 +2,9 @@ import { kelvinToCelsius, kelvinToFahrenheit } from "./utils.js";
 
 const bodyElement = document.querySelector("body")
 const darkModeToggle = document.querySelector(".checkbox");
-const API_KEY = "82b044c3f2b7330f8c49cf01232936fe"
+const API_KEY = "82b044c3f2b7330f8c49cf01232936fe";
+
+const mainImage = document.querySelector('.main-image')
 let cityName = ''
 
 //Toggle dark mode
@@ -21,6 +23,8 @@ darkModeToggle.addEventListener("change", (event)=>{
 //Make ReadMe
 //Dropdown with valid cities as you type
 //Clean up code 
+//Maybe add icons before description
+//Add animation
 
 const inputElement = document.querySelector('.city-input-box')
 const searchButton = document.querySelector('.search-button');
@@ -49,6 +53,40 @@ inputElement.addEventListener('keydown', (event)=>{
         getWeatherData(cityName)
     }
 })
+
+const displayMatchingImage = (data) =>{
+    const descriptionId = data.weather[0].id
+    if (descriptionId >= 200 && descriptionId <= 299) {
+        mainImage.src = "./assets/cloud-with-lightening-and-rain.svg";
+    } else if (descriptionId >= 300 && descriptionId <= 399) {
+        mainImage.src = "./assets/light-drizzle.svg"; // Drizzle
+    } else if (descriptionId >= 500 && descriptionId <= 599) {
+        mainImage.src = "./assets/cloud-with-rain.svg"; // Rain
+    } else if (descriptionId >= 600 && descriptionId <= 699) {
+        mainImage.src = "./assets/cloud-with-snowflake.svg"; // Snow
+    } else if (descriptionId >= 700 && descriptionId <= 799) {
+        mainImage.src = "./assets/windy-weather.svg"; // Mist, smoke, haze, fog
+    } else if (descriptionId === 800) {
+        mainImage.src = "./assets/partly-cloudy.svg"; // Clear sky
+    } else if (descriptionId >= 801 && descriptionId <= 810) {
+        mainImage.src = "./assets/cloudy.svg"; // Cloudy (partly cloudy to overcast)
+    } else {
+        mainImage.src = "/assets/partly-cloudy.svg"; // Default image for unknown conditions
+    }
+
+    const imageSrc = mainImage.src;
+
+    const tempValueElement = document.querySelector('.temp-value')
+
+
+
+    // Adjust margin based on image source
+    if (imageSrc.includes("partly-cloudy")) {
+        tempValueElement.style.marginTop = "-40px";
+    } else {
+        tempValueElement.style.marginTop = "0px";
+    }
+};
 
 const displayData = (data) => {
     const tempValueElement = document.querySelector('.temp-value')
@@ -79,6 +117,8 @@ const displayData = (data) => {
     pressureValueElement.textContent = `${data.main.pressure}hPa`
     weatherConditionElement.textContent = `Weather condition: ${data.weather[0].description}`
 
+    displayMatchingImage(data)
+   
 }
 
 
