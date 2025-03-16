@@ -3,8 +3,6 @@ import { kelvinToCelsius, kelvinToFahrenheit } from "./utils.js";
 const bodyElement = document.querySelector("body")
 const darkModeToggle = document.querySelector(".checkbox");
 const API_KEY = "82b044c3f2b7330f8c49cf01232936fe";
-const errorMsg = 
-    '<i class="fas fa-times-circle"></i> Please fix the error ! ';
 
 const mainImage = document.querySelector('.main-image')
 let cityName = ''
@@ -51,14 +49,8 @@ function showToast(message, type) {
 
 const getInputValue = () =>{
     const inputElement = document.querySelector(".city-input-box");
-    if(inputElement.value.length === 0){
-        showToast("City name cannot be empty!", "error");
-    
-    }else{
-        cityName = inputElement.value.trim().replace(/[^a-zA-Z ]/g, "");
-        cityName =  cityName.charAt(0).toUpperCase() + cityName.slice(1);
-        console.log(`city name: ${cityName}`)
-    }
+    cityName = inputElement.value.trim().replace(/[^a-zA-Z ]/g, "");
+    cityName =  cityName.charAt(0).toUpperCase() + cityName.slice(1);
 }
 
 searchButton.addEventListener('click', ()=>{
@@ -98,8 +90,6 @@ const displayMatchingImage = (data) =>{
     const tempValueElement = document.querySelector('.temp-value')
 
 
-
-    // Adjust margin based on image source
     if (imageSrc.includes("partly-cloudy")) {
         tempValueElement.style.marginTop = "-40px";
     } else {
@@ -141,15 +131,33 @@ const displayData = (data) => {
 }
 
 
-const getWeatherData = async (cityName) =>{
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`
+const getWeatherData = async (cityName) => {
+    if (!cityName) {
+        showToast("Please enter a city name", "error");
+        return;
+    }
+    
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
 
-    const response = await fetch(url)
-    const data = await response.json()
-    console.log(data)
+    try {
+        const response = await fetch(url);
+        const data = await response.json(); 
 
-    displayData(data)
-}
+        if (!response.ok) {
+            showToast(` ${data.message}`, "error");
+            return;
+        }
+        displayData(data);
+
+    } catch (error) {
+        if (error.message.includes("Failed to fetch")) {
+            showToast("Network error: Check your internet connection.", "error");
+        } else {
+            showToast("Unexpected error occurred. Please try again later.", "error");
+        }
+    }
+};
+
 
 // Function to fetch weather data by user's location
 const getWeatherByLocation = async (latitude, longitude) => {
