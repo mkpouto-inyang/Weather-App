@@ -3,6 +3,8 @@ import { kelvinToCelsius, kelvinToFahrenheit } from "./utils.js";
 const bodyElement = document.querySelector("body")
 const darkModeToggle = document.querySelector(".checkbox");
 const API_KEY = "82b044c3f2b7330f8c49cf01232936fe";
+const errorMsg = 
+    '<i class="fas fa-times-circle"></i> Please fix the error ! ';
 
 const mainImage = document.querySelector('.main-image')
 let cityName = ''
@@ -23,18 +25,35 @@ darkModeToggle.addEventListener("change", (event)=>{
 //Make ReadMe
 //Dropdown with valid cities as you type
 //Clean up code 
-//Maybe add icons before description
 //Add animation
 
 const inputElement = document.querySelector('.city-input-box')
 const searchButton = document.querySelector('.search-button');
 const dropdownElement = document.querySelector('.dropdown')
 
+function showToast(message, type) {
+    const toastBox = document.querySelector(".toastBox");
+
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <i class="material-icons">${type === "success" ? "check_circle" : type === "error" ? "error" : "warning"}</i>
+        <span>${message}</span>
+        <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+
+    toastBox.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
 const getInputValue = () =>{
     const inputElement = document.querySelector(".city-input-box");
     if(inputElement.value.length === 0){
-        //Better error message goes here
-        alert('fill it o')
+        showToast("City name cannot be empty!", "error");
+    
     }else{
         cityName = inputElement.value.trim().replace(/[^a-zA-Z ]/g, "");
         cityName =  cityName.charAt(0).toUpperCase() + cityName.slice(1);

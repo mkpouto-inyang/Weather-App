@@ -56,6 +56,66 @@ body{
     align-items: center;
 }
 
+.toastBox {
+    position: fixed;
+    top: 20px; /* Keep this fixed to prevent it from going lower */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column-reverse; /* Newest error messages appear on top */
+    align-items: center;
+    z-index: 1000;
+}
+
+.toast {
+    width: 400px;
+    background: #fff;
+    font-weight: 500;
+    padding: 16px;
+    margin: 5px 0; /* Reduce margin so they don't space out too much */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    position: relative;
+    opacity: 0;
+    animation: dropIn 0.3s ease-out forwards, fadeOut 1s ease-in forwards 2.5s;
+}
+
+@keyframes dropIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+    }
+}
+
+.toast.success { border-left: 5px solid green; }
+.toast.error { border-left: 5px solid red; }
+.toast.invalid { border-left: 5px solid orange; }
+
+.toast i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
 .dropdown-container {
     position: relative;
     display: inline-block;
