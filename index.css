@@ -255,7 +255,7 @@ body{
 /* Main content area */
 
 .content-area{
-    margin-top: 40px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
