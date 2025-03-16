@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <script defer src="./script.js"></script>
+    <script defer src="./script.js" type="module"></script>
     <link rel="stylesheet" href="./index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,10 +38,9 @@
 
         <section class="search-area">
             <div>
-                <input type="text" placeholder="Enter a city">
-                <button>
+                <input type="text" placeholder="Enter a city" class="city-input-box">
+                <button class="search-button">
                     <img src="./assets/search-icon.svg" alt="search-icon">
-
                 </button>
             </div>
         </section>
@@ -49,8 +48,10 @@
         <section class="content-area">
             <div class="result-display">
                 <img src="./assets/Partly Cloudy.svg" alt="A cloud image">
-                <p class="temp-value">24°C</p>
-                <p class="city-name">London</p>
+                <p class="temp-value"></p>
+                <p class="city-name"></p>
+                <p class="weather-condition"> </p>
+
             </div>
             
             <div class="extra-info">
@@ -58,12 +59,12 @@
                     <span class="material-symbols-outlined"> humidity_percentage</span>
                 </div>
                 <div class="info-detail info-detail-one">
-                    <p>64%</p>
-                    <p>Humility</p>
+                    <p class="humidity-value">64%</p>
+                    <p>Humidity</p>
                 </div>
                 <div class="divider-line"></div>
                 <div class="info-detail">
-                    <p>1016hPa</p>
+                    <p class="pressure-value">1016hPa</p>
                     <p>Pressure</p>
                 </div>
                 <div>
