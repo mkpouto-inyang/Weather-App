@@ -31,14 +31,6 @@ const hideLoader = () => {
     document.querySelector(".extra-info").style.display = "flex";
 };
 
-//TO D0 :
-// Add error if empty search box is submitted
-//Add loading state when data is fetched
-//Make ReadMe
-//Dropdown with valid cities as you type
-//Clean up code 
-//Add animation
-
 const inputElement = document.querySelector('.city-input-box')
 const searchButton = document.querySelector('.search-button');
 const dropdownElement = document.querySelector('.dropdown');
@@ -105,7 +97,6 @@ const displayMatchingImage = (data) =>{
 
     const tempValueElement = document.querySelector('.temp-value')
 
-
     if (imageSrc.includes("partly-cloudy")) {
         tempValueElement.style.marginTop = "-40px";
     } else {
@@ -145,7 +136,6 @@ const displayData = (data) => {
     displayMatchingImage(data)
    
 }
-
 
 const getWeatherData = async (cityName) => {
     if (!cityName) {
