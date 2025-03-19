@@ -73,78 +73,84 @@ inputElement.addEventListener('keydown', (event)=>{
     }
 })
 
-const displayMatchingImage = (data) =>{
-    const descriptionId = data.weather[0].id
+const displayMatchingImage = (data) => {
+    return new Promise((resolve) => {
+        const descriptionId = data.weather[0].id;
 
-    if (descriptionId >= 200 && descriptionId <= 299) {
-        mainImage.src = "./assets/cloud-with-lightening-and-rain.svg";
-    } else if (descriptionId >= 300 && descriptionId <= 399) {
-        mainImage.src = "./assets/light-drizzle.svg"; // Drizzle
-    } else if (descriptionId >= 500 && descriptionId <= 599) {
-        mainImage.src = "./assets/cloud-with-rain.svg"; // Rain
-    } else if (descriptionId >= 600 && descriptionId <= 699) {
-        mainImage.src = "./assets/cloud-with-snowflake.svg"; // Snow
-    } else if (descriptionId >= 700 && descriptionId <= 799) {
-        mainImage.src = "./assets/windy-weather.svg"; // Mist, smoke, haze, fog
-    } else if (descriptionId === 800) {
-        mainImage.src = "./assets/partly-cloudy.svg"; // Clear sky
-    } else if (descriptionId >= 801 && descriptionId <= 810) {
-        mainImage.src = "./assets/cloudy.svg"; // Cloudy (partly cloudy to overcast)
-    } else {
-        mainImage.src = "/assets/partly-cloudy.svg"; // Default image for unknown conditions
-    }
+        if (descriptionId >= 200 && descriptionId <= 299) {
+            mainImage.src = "./assets/cloud-with-lightening-and-rain.svg";
+        } else if (descriptionId >= 300 && descriptionId <= 399) {
+            mainImage.src = "./assets/light-drizzle.svg"; // Drizzle
+        } else if (descriptionId >= 500 && descriptionId <= 599) {
+            mainImage.src = "./assets/cloud-with-rain.svg"; // Rain
+        } else if (descriptionId >= 600 && descriptionId <= 699) {
+            mainImage.src = "./assets/cloud-with-snowflake.svg"; // Snow
+        } else if (descriptionId >= 700 && descriptionId <= 799) {
+            mainImage.src = "./assets/windy-weather.svg"; // Mist, smoke, haze, fog
+        } else if (descriptionId === 800) {
+            mainImage.src = "./assets/partly-cloudy.svg"; // Clear sky
+        } else if (descriptionId >= 801 && descriptionId <= 810) {
+            mainImage.src = "./assets/cloudy.svg"; // Cloudy (partly cloudy to overcast)
+        } else {
+            mainImage.src = "/assets/partly-cloudy.svg"; // Default image for unknown conditions
+        }
 
-    const imageSrc = mainImage.src;
+        // Ensure image is fully loaded before resolving
+        mainImage.onload = () => {
+            const imageSrc = mainImage.src;
+            const tempValueElement = document.querySelector('.temp-value');
 
-    const tempValueElement = document.querySelector('.temp-value')
+            if (imageSrc.includes("partly-cloudy")) {
+                tempValueElement.style.marginTop = "-40px";
+            } else {
+                tempValueElement.style.marginTop = "0px";
+            }
 
-    if (imageSrc.includes("partly-cloudy")) {
-        tempValueElement.style.marginTop = "-40px";
-    } else {
-        tempValueElement.style.marginTop = "0px";
-    }
+            resolve();
+        };
+    });
 };
 
 const displayData = (data) => {
-    displayMatchingImage(data)
+    return new Promise((resolve) => {
+        const tempValueElement = document.querySelector('.temp-value')
+        const cityNameElement = document.querySelector('.city-name')
+        const pressureValueElement = document.querySelector('.pressure-value')
+        const humidityValueElement = document.querySelector('.humidity-value')
+        const weatherConditionElement = document.querySelector('.weather-condition')
 
+        // Set temperature based on dropdown selection
+        if (dropdownElement.value === "celsius") {
+            tempValueElement.textContent = `${Math.round(kelvinToCelsius(data.main.temp))}°C`;
+        } else {
+            tempValueElement.textContent = `${Math.round(kelvinToFahrenheit(data.main.temp))}°F`;
+        }
 
-    const tempValueElement = document.querySelector('.temp-value')
-    const cityNameElement = document.querySelector('.city-name')
-    const pressureValueElement = document.querySelector('.pressure-value')
-    const humidityValueElement = document.querySelector('.humidity-value')
-    const weatherConditionElement = document.querySelector('.weather-condition')
-    
+        // Listen for dropdown change
+        dropdownElement.addEventListener('change', () => {
+            if (dropdownElement.value === "celsius") {
+                tempValueElement.textContent = `${Math.round(kelvinToCelsius(data.main.temp))}°C`;
+            } else {
+                tempValueElement.textContent = `${Math.round(kelvinToFahrenheit(data.main.temp))}°F`;
+            }
+        });
 
-    //checks what option is selected when the user first loads the page
-    if (dropdownElement.value === "celsius"){
-        tempValueElement.textContent = `${Math.round(kelvinToCelsius(data.main.temp))}°C`
-    } else {
-        tempValueElement.textContent = `${Math.round(kelvinToFahrenheit(data.main.temp))}°F`
-    }
+        cityNameElement.textContent = `${data.name}`;
+        humidityValueElement.textContent = `${data.main.humidity}%`;
+        pressureValueElement.textContent = `${data.main.pressure}hPa`;
+        weatherConditionElement.textContent = `Weather condition: ${data.weather[0].description}`;
 
-     //checks what option is selected when the user selects a differnt option from the dropdown
-    dropdownElement.addEventListener('change', ()=>{   
-    if (dropdownElement.value === "celsius"){
-        tempValueElement.textContent = `${Math.round(kelvinToCelsius(data.main.temp))}°C`
-    } else {
-        tempValueElement.textContent = `${Math.round(kelvinToFahrenheit(data.main.temp))}°F`
-    }
-    })
-
-    cityNameElement.textContent = `${data.name}`
-    humidityValueElement.textContent = `${(data.main.humidity)}%`
-    pressureValueElement.textContent = `${data.main.pressure}hPa`
-    weatherConditionElement.textContent = `Weather condition: ${data.weather[0].description}`
-
-    hideLoader();
-}
+        // Call displayMatchingImage and return its promise
+        resolve(displayMatchingImage(data));
+    });
+};
 
 const getWeatherData = async (cityName) => {
     if (!cityName) {
         showToast("Please enter a city name", "error");
         return;
     }
+
     showLoader();
     
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
@@ -157,7 +163,9 @@ const getWeatherData = async (cityName) => {
             showToast(` ${data.message}`, "error");
             return;
         }
-        displayData(data);
+
+        // Wait for both text and image updates before hiding loader
+        await Promise.all([displayData(data), displayMatchingImage(data)]);
 
     } catch (error) {
         if (error.message.includes("Failed to fetch")) {
@@ -165,6 +173,8 @@ const getWeatherData = async (cityName) => {
         } else {
             showToast("Unexpected error occurred. Please try again later.", "error");
         }
+    } finally {
+        hideLoader();
     }
 };
 
