@@ -75,6 +75,7 @@ inputElement.addEventListener('keydown', (event)=>{
 
 const displayMatchingImage = (data) =>{
     const descriptionId = data.weather[0].id
+
     if (descriptionId >= 200 && descriptionId <= 299) {
         mainImage.src = "./assets/cloud-with-lightening-and-rain.svg";
     } else if (descriptionId >= 300 && descriptionId <= 399) {
@@ -105,6 +106,9 @@ const displayMatchingImage = (data) =>{
 };
 
 const displayData = (data) => {
+    displayMatchingImage(data)
+
+
     const tempValueElement = document.querySelector('.temp-value')
     const cityNameElement = document.querySelector('.city-name')
     const pressureValueElement = document.querySelector('.pressure-value')
@@ -133,8 +137,7 @@ const displayData = (data) => {
     pressureValueElement.textContent = `${data.main.pressure}hPa`
     weatherConditionElement.textContent = `Weather condition: ${data.weather[0].description}`
 
-    displayMatchingImage(data)
-   
+    hideLoader();
 }
 
 const getWeatherData = async (cityName) => {
@@ -162,8 +165,6 @@ const getWeatherData = async (cityName) => {
         } else {
             showToast("Unexpected error occurred. Please try again later.", "error");
         }
-    } finally {
-        hideLoader();
     }
 };
 
